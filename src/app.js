@@ -22,6 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
+//Route handling
+import userRouter from './routes/user.route.js';
+app.use('/api/v1/user', userRouter);
+
+
 
 
 
