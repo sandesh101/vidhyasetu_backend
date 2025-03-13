@@ -2,6 +2,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import BlacklistToken from '../models/blacklisttoken.model.js';
 
 //Register user controller
 export const registerUser = async (req, res) => {
@@ -71,7 +72,41 @@ export const registerUser = async (req, res) => {
 
 //Login user controller
 export const loginUser = async (req, res) => {
-    console.log("Login user");
+    try {
+        const { email, password } = req.body;
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({
+                message: "User does not exists",
+            });
+        }
+
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatched) {
+            return res.status(401).json({
+                message: "Invalid Email or password",
+            });
+        } else {
+            //Sign user with jwt
+            const userWOPassword = await User.findById(user._id).select("-password");
+            const accessToken = await jwt.sign({
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    username: user.username,
+                    mobile: user.mobile
+                },
+            },
+                process.env.ACCESS_TOKEN,
+                { expiresIn: '1h', },
+            );
+            return res.status(200).json(new ApiResponse(200, { token: accessToken, user: userWOPassword }, "Login Successfull"));
+        }
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 
@@ -81,12 +116,10 @@ export const logoutUser = async (req, res) => {
         const token = req.token;
         await BlacklistToken.create({ token });
 
-        res.status(200).json({
-            success: true,
-            message: "Logged out successfully",
-        });
+        res.status(200).json(new ApiResponse(200, '', "Logged out successfully"));
     } catch (error) {
-        res.status(500).json({ success: false, message: "Server error" });
+        console.log(error);
+        res.status(500).json(new ApiResponse(500, "Something went wrong while logout"));
     }
 }
 
