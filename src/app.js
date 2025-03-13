@@ -23,8 +23,15 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //Route handling
-import userRouter from './routes/user.route.js';
-app.use('/api/v1/auth', userRouter);
+//User routes
+import userRoute from './routes/user.route.js';
+app.use('/api/v1/auth', userRoute);
+
+
+//College routes
+import collegeRoute from './routes/college.route.js';
+app.use('/api/v1/college', collegeRoute);
+
 
 
 
