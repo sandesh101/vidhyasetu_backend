@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+//Register user controller
 export const registerUser = async (req, res) => {
     const { email, fullName, password, role, profilePicture } = req.body;
     try {
@@ -67,7 +68,26 @@ export const registerUser = async (req, res) => {
     }
 }
 
+
+//Login user controller
 export const loginUser = async (req, res) => {
     console.log("Login user");
 }
+
+
+//Logout user controller
+export const logoutUser = async (req, res) => {
+    try {
+        const token = req.token;
+        await BlacklistToken.create({ token });
+
+        res.status(200).json({
+            success: true,
+            message: "Logged out successfully",
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
+
 
