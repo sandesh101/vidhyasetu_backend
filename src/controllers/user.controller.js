@@ -63,7 +63,7 @@ export const registerUser = async (req, res) => {
         }
 
         //Returning the registered user
-        return res.status(200).json(new ApiResponse(200, { token: accessToken, user: createdUser }, "Signup Successfull"));
+        return res.status(200).json(new ApiResponse(200, { token: accessToken, user: createdUser }, "Signup successful"));
     } catch (error) {
         console.log(error);
     }
@@ -102,7 +102,7 @@ export const loginUser = async (req, res) => {
                 process.env.ACCESS_TOKEN,
                 { expiresIn: '1h', },
             );
-            return res.status(200).json(new ApiResponse(200, { token: accessToken, user: userWOPassword }, "Login Successfull"));
+            return res.status(200).json(new ApiResponse(200, { token: accessToken, user: userWOPassword }, "Login successful"));
         }
     } catch (err) {
         console.log(err);
@@ -116,7 +116,7 @@ export const logoutUser = async (req, res) => {
         const token = req.token;
         await BlacklistToken.create({ token });
 
-        res.status(200).json(new ApiResponse(200, '', "Logged out successfully"));
+        res.status(200).json(new ApiResponse(200, '', "Logged out successfuly"));
     } catch (error) {
         console.log(error);
         res.status(500).json(new ApiResponse(500, "Something went wrong while logout"));

@@ -26,7 +26,7 @@ export const createCollege = async (req, res) => {
             return res.status(500).json(new ApiResponse(500, '', 'Something went wrong while creating college'));
         }
 
-        return res.status(200).json(new ApiResponse(200, createCollege, "Creating college successfull"));
+        return res.status(200).json(new ApiResponse(200, createCollege, "Creating college successful"));
     } catch (error) {
         console.log(error);
     }
@@ -39,7 +39,7 @@ export const getAllColleges = async (req, res) => {
         if (!fetchedColleges) {
             return res.status(500).json(new ApiResponse(500, '', 'Error fetching colleges'));
         }
-        return res.status(200).json(new ApiResponse(500, fetchedColleges, 'College fetched successfully'));
+        return res.status(200).json(new ApiResponse(500, fetchedColleges, 'College fetched successfuly'));
     } catch (error) {
         return res.status(400).json(new ApiResponse(400, '', 'Error fetching college'));
     }
@@ -73,7 +73,7 @@ export const updateColelge = async (req, res) => {
         }
 
         const updatedCollege = await college.save();
-        return res.status(200).json(new ApiResponse(200, updatedCollege, "College updated successfully"));
+        return res.status(200).json(new ApiResponse(200, updatedCollege, "College updated successfuly"));
     } catch (error) {
         // console.log(error);
         return res.status(500).json(new ApiResponse(500, '', "Error updating college"));
@@ -93,7 +93,7 @@ export const deleteCollege = async (req, res) => {
         }
         await college.deleteOne();
 
-        res.status(200).json(new ApiResponse(200, "", "College deleted successfully"));
+        res.status(200).json(new ApiResponse(200, "", "College deleted successfuly"));
     } catch (error) {
         res.status(500).json(new ApiResponse(500, '', 'Error deleting college'));
     }

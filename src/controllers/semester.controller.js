@@ -30,7 +30,7 @@ export const createSemester = async (req, res) => {
             res.status(400).json(new ApiResponse(400, '', 'Error while creating semester'));
         }
 
-        return res.status(200).json(new ApiResponse(200, newSemester, 'Semester created successfully'));
+        return res.status(200).json(new ApiResponse(200, newSemester, 'Semester created successfuly'));
 
     } catch (error) {
         console.log(error);
@@ -73,14 +73,14 @@ export const updateSemester = async (req, res) => {
         //Check if semester available
         const semester = await Semester.findById(id);
         if (!semester) {
-            return res.status(404).json(new ApiResponse(404, "", 'No semester foudn'));
+            return res.status(404).json(new ApiResponse(404, "", 'No semester found'));
         }
 
         if (name) {
             semester.name = name;
         }
         await semester.save();
-        return res.status(200).json(new ApiResponse(200, semester, 'Update Successfull'));
+        return res.status(200).json(new ApiResponse(200, semester, 'Update Successful'));
     } catch (error) {
         return res.status(500).json(new ApiResponse(500, "", 'Error updating'));
     }
@@ -99,7 +99,7 @@ export const deleteSemester = async (req, res) => {
         }
 
         await semester.deleteOne();
-        return res.status(200).json(new ApiResponse(200, "", 'Deleting semester successfull'));
+        return res.status(200).json(new ApiResponse(200, "", 'Deleting semester successful'));
     } catch (error) {
         return res.status(500).json(new ApiResponse(500, "", 'Error deleting'));
     }
