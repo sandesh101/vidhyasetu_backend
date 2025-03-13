@@ -32,6 +32,10 @@ app.use('/api/v1/auth', userRoute);
 import collegeRoute from './routes/college.route.js';
 app.use('/api/v1/college', collegeRoute);
 
+//Semester routes
+import semesterRoute from './routes/semester.route.js';
+app.use('/api/v1/semester', semesterRoute);
+
 
 
 
