@@ -44,9 +44,16 @@ export const registerUser = async (req, res) => {
 
     //Check if user correctly created
     if (!createdUser) {
-      res.status(500).json({
-        message: "Somthing went wrong while registering user",
-      });
+      res
+        .status(500)
+        .json(
+          new ApiResponse(
+            500,
+            {},
+            "something went wrong while registering user",
+            false
+          )
+        );
     }
 
     const accessToken = await jwt.sign(
@@ -88,18 +95,24 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-
     if (!user) {
-      return res.status(401).json({
-        message: "User does not exists",
-      });
+      res
+        .status(409)
+        .json(
+          new ApiResponse(
+            409,
+            {},
+            "User with provided email does not exists",
+            false
+          )
+        );
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.password);
     if (!isPasswordMatched) {
-      return res.status(401).json({
-        message: "Invalid Email or password",
-      });
+      res
+        .status(400)
+        .json(new ApiResponse(409, {}, "Invalid email or password", false));
     } else {
       //Sign user with jwt
       const userWOPassword = await User.findById(user._id).select("-password");
@@ -126,7 +139,10 @@ export const loginUser = async (req, res) => {
         );
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    throw res
+      .status(500)
+      .json(new ApiResponse(200, {}, "Something went wrong"));
   }
 };
 
